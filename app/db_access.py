@@ -1,5 +1,5 @@
-greek_names = [f"nom_perso{i}" for i in range(10)]
-french_names = [f"nom_perso_fr{i}" for i in range(10)]
+greek_names = [f"nom_perso{i}" for i in range(5)]
+french_names = [f"nom_perso_fr{i}" for i in range(5)]
 
 
 def get_greek_characters_names(lang):
@@ -9,11 +9,17 @@ def get_greek_characters_names(lang):
         return greek_names
 
 
-def delete_character(character):
-    greek_names.remove(character)
+def delete_character(character, lang):
+    if lang == 'greek':
+        greek_names.remove(character)
+    elif lang == 'french':
+        french_names.remove(character)
     return
 
 
-def add_character(character):
-    greek_names.append(character)
+def add_character(character, lang):
+    if lang == 'greek':
+        greek_names.append(character)
+    elif lang == 'french':
+        french_names.append(character)
     return

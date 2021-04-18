@@ -3,15 +3,16 @@ const DELETE_CHAR_URL = '/deleteChar'
 const ADD_CHAR_URL = '/addChar'
 const GET_CHARS_URL = '/getChars'
 
-function addEventListeners() {
-    let languageNames = ['greek', 'french']
-
+function addCharacterBadgesEventListeners(lang) {
     $(".btn-close").each(function (index) {
             if ($(this).attr('action') == BTN_DELETE_ACTION_NAME) {
                 $(this).on('click', function (event) {
-                    let data = {character: $(this).attr('character')}
+                    let data = {
+                        character: $(this).attr('character'),
+                        language: lang
+                    }
                     fetch(makePostRequest(DELETE_CHAR_URL, data)).then(_ => {
-                        generateCharacterBadges('greek')
+                        generateCharacterBadges(lang)
                     })
                 })
             }
@@ -20,17 +21,18 @@ function addEventListeners() {
     )
 
 
-    $("#greekAddCharButton").on('click', function (index) {
-            let character = $("#greekAddCharInput").val()
-            let data = {character: character}
+    $("#" + lang + "AddCharButton").on('click', function (index) {
+            let character = $("#" + lang + "AddCharInput").val()
+            let data = {character: character, language: lang}
             if (character) {
                 fetch(makePostRequest(ADD_CHAR_URL, data)).then(_ => {
-                    generateCharacterBadges('greek')
+                    generateCharacterBadges(lang)
                 })
             }
 
         }
     )
+
 }
 
 function makePostRequest(url, data) {
@@ -60,7 +62,7 @@ function generateCharacterBadges(lang) {
                 }
             )
             elem.html(newHTML)
-            addEventListeners()
+            addCharacterBadgesEventListeners(lang)
         })
 
 }
@@ -73,4 +75,6 @@ function generateCharacterBadgeHTML(lang, character) {
             </div>`
 }
 
+
 generateCharacterBadges('greek')
+generateCharacterBadges('french')
