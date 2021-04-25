@@ -76,5 +76,6 @@ function generateCharacterBadgeHTML(lang, character) {
 }
 
 
-generateCharacterBadges('greek')
-generateCharacterBadges('french')
+// generateCharacterBadges('greek')
+// generateCharacterBadges('french')
+
