@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block content %}
+<!--<h3 style="text-align: center">Mes Projets</h3>-->
+
+<div class="container">
+    <table class="table table-sm table-striped table-bordered">
+        <thead>
+        <tr>
+            <th scope="col" style="width: 10%">#</th>
+            <th scope="col" style="width: 90%">Nom du projet</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for project in projects %}
+        <tr>
+            <th scope="row">{{loop.index}}</th>
+            <th scope="row">
+                <a href="/project?id={{project.id}}"> {{project.french_name}}</a>
+                <button type="button" class="btn btn-danger float-end" data-bs-toggle="modal"
+                        data-bs-target="#confirmProjectDelete{{project.id}}">Supprimer
+                </button>
+            </th>
+        </tr>
+
+        <div class="modal fade" id="confirmProjectDelete{{project.id}}" tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmer</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Etes-vous sur de vouloir supprimer ce projet? Tout le progrès sera perdu.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <form action="/deleteProject?id={{project.id}}" method="get">
+                            <input type="hidden" name="id" value="{{project.id}}">
+                            <button type="submit" class="btn btn-danger"> Supprimer
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-success float-end" data-bs-toggle="modal"
+            data-bs-target="#addProject">Ajouter
+    </button>
+</div>
+
+
+<div class="modal fade" id="addProject" tabindex="-1"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nouveau projet</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="newProject" action="/addProject" method="post">
+                    <div class="form-group">
+                        <label for="french_name">Entrez le nom de la pièce en Français:</label>
+                        <input type="text" class="form-control" name="french_name" placeholder="Nom de la pièce" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="greek_name">Entrez le nom de la pièce en Grec (Optionnel):</label>
+                        <input type="text" class="form-control" name="greek_name" placeholder="Nom de la pièce">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file">Choisissez le fichier JSON de la pièce</label>
+                        <input type="file" class="form-control-file" id="file" name="file_path" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="submit" form="newProject" class="btn btn-danger">Creer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

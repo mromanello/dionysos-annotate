@@ -1,0 +1,383 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!--<h3 style="text-align: center">{{page_title}}</h3>-->
+
+<div class="container">
+    <table class="table small table-striped table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Personnages en grec</th>
+            <th scope="col">Personnages en français</th>
+            <th scope="col">Accessoires</th>
+            <th scope="col">Encycleme</th>
+            <th scope="col">Mechane</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <td>
+            {% for character in greek_characters %}
+            <div class="d-flex flex-row mb-1">
+                <div class="badge bg-light text-dark">
+                    {{character.name}}
+                    <button action="delete" type="button" class="btn-close" aria-label="Close" data-bs-toggle="modal"
+                            data-bs-target="#confirmGreekCharDelete{{character.id}}"></button>
+                    <div class="modal fade" id="confirmGreekCharDelete{{character.id}}" tabindex="-1"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Confirmer</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Etes-vous sur de vouloir supprimer le personnage {{character.name}} ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler
+                                    </button>
+                                    <form action="/deleteCharacter" method="get">
+                                        <input type="hidden" name="id" value="{{character.id}}">
+                                        <button type="submit" class="btn btn-danger"> Supprimer
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </td>
+        <td>
+            {% for character in french_characters %}
+            <div class="d-flex flex-row mb-1">
+                <div class="badge bg-light text-dark">
+                    {{character.name}}
+                    <button action="delete" type="button" class="btn-close" aria-label="Close" data-bs-toggle="modal"
+                            data-bs-target="#confirmFrenchCharDeleteChar{{character.id}}"></button>
+
+                    <div class="modal fade" id="confirmFrenchCharDeleteChar{{character.id}}" tabindex="-1"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Confirmer</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Etes-vous sur de vouloir supprimer le personnage {{character.name}} ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler
+                                    </button>
+                                    <form action="/deleteCharacter" method="get">
+                                        <input type="hidden" name="id" value="{{character.id}}">
+                                        <button type="submit" class="btn btn-danger"> Supprimer
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </td>
+        <td>
+            {% for accessory in project.accessories %}
+            <div class="d-flex flex-row mb-1">
+                <div class="badge bg-light text-dark">
+                    {{accessory.name}}
+                    <button action="delete" type="button" class="btn-close" aria-label="Close" data-bs-toggle="modal"
+                            data-bs-target="#confirmDeleteAccessory{{accessory.id}}"></button>
+
+                    <div class="modal fade" id="confirmDeleteAccessory{{accessory.id}}" tabindex="-1"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Confirmer</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Etes-vous sur de vouloir supprimer l'accessoire {{accessory.name}} ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler
+                                    </button>
+                                    <form action="/deleteAccessory" method="get">
+                                        <input type="hidden" name="id" value="{{accessory.id}}">
+                                        <button type="submit" class="btn btn-danger"> Supprimer
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </td>
+        <td>
+            <form id="saveEncycleme" action="/saveEncycleme" method="post">
+                {% if project.encycleme %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radioEncycleme" id="radioEncyclemeYes"
+                           value="yes" checked>
+                    <label class="form-check-label" for="radioEncyclemeYes">
+                        Oui
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radioEncycleme" id="radioEncyclemeNo" value="no">
+                    <label class="form-check-label" for="radioEncyclemeNo">
+                        Non
+                    </label>
+                </div>
+
+                {% else %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radioEncycleme" id="radioEncyclemeYes"
+                           value="yes">
+                    <label class="form-check-label" for="radioEncyclemeYes">
+                        Oui
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radioEncycleme" id="radioEncyclemeNo" checked
+                           value="no">
+                    <label class="form-check-label" for="radioEncyclemeNo">
+                        Non
+                    </label>
+                </div>
+                {% endif %}
+                <input type="hidden" name="project_id" value="{{project.id}}">
+            </form>
+        </td>
+        <td>
+            <form id="saveMechane" action="/saveMechane" method="post">
+                {% if project.mechane %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radioMechane" id="radioMechaneYes" value="yes"
+                           checked>
+                    <label class="form-check-label" for="radioMechaneYes">
+                        Oui
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radioMechane" id="radioMechaneNo" value="no">
+                    <label class="form-check-label" for="radioMechaneNo">
+                        Non
+                    </label>
+                </div>
+
+                {% else %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radioMechane" id="radioMechaneYes" value="yes">
+                    <label class="form-check-label" for="radioMechaneYes">
+                        Oui
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radioMechane" id="radioMechaneNo" value="no"
+                           checked>
+                    <label class="form-check-label" for="radioMechaneNo">
+                        Non
+                    </label>
+                </div>
+                {% endif %}
+                <input type="hidden" name="project_id" value="{{project.id}}">
+            </form>
+        </td>
+
+        </tbody>
+        <tfoot>
+
+        <td>
+            <div class="d-flex align-items-end justify-content-end">
+                <button action="add" type="button" class="btn btn-success float-end align-bottom" aria-label="Add"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addGreekCharModal">Ajouter
+                </button>
+                <div class="modal fade" id="addGreekCharModal" tabindex="-1"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Ajouter un personnage</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="newCharacter" action="/addCharacter" method="post">
+                                    <div class="form-group">
+                                        <label for="addCharInput" class="form-label">Entrez le nom du Personnage</label>
+                                        <input type="text" class="form-control" id="addCharInput" , name="name"
+                                               aria-describedby="addChar" required>
+                                    </div>
+                                    <input type="hidden" name="lang" value="greek">
+                                    <input type="hidden" name="project_id" value="{{project.id}}">
+                                </form>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                <button type="submit" class="btn btn-primary" , form="newCharacter">Ajouter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="d-flex align-items-end justify-content-end">
+                <button action="add" type="button" class="btn btn-success float-end" aria-label="Add"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addFrenchCharModal">Ajouter
+                </button>
+                <div class="modal fade" id="addFrenchCharModal" tabindex="-1"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Ajouter un personnage</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="newFrenchCharacter" action="/addCharacter" method="post">
+                                    <div class="form-group">
+                                        <label for="addFrenchCharInput" class="form-label">Entrez le nom du
+                                            Personnage</label>
+                                        <input type="text" class="form-control" id="addFrenchCharInput" , name="name"
+                                               aria-describedby="addChar" required>
+                                    </div>
+                                    <input type="hidden" name="lang" value="french">
+                                    <input type="hidden" name="project_id" value="{{project.id}}">
+                                </form>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                <button type="submit" class="btn btn-primary" , form="newFrenchCharacter">Ajouter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="d-flex align-items-end justify-content-end">
+                <button action="add" type="button" class="btn btn-success float-end" aria-label="Add"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addAccessoryModal">Ajouter
+                </button>
+                <div class="modal fade" id="addAccessoryModal" tabindex="-1"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Ajouter un Accessoire</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="newAccessory" action="/addAccessory" method="post">
+                                    <div class="form-group">
+                                        <label for="addAccessory" class="form-label">Entrez le nom de
+                                            l'accessoire:</label>
+                                        <input type="text" class="form-control" id="addAccessory" , name="name"
+                                               aria-describedby="addAccessory" required>
+                                    </div>
+                                    <input type="hidden" name="project_id" value="{{project.id}}">
+                                </form>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                <button type="submit" class="btn btn-primary" , form="newAccessory">Ajouter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="d-flex align-items-end justify-content-end">
+                <button form="saveEncycleme" type="submit" class="btn btn-success float-end" aria-label="save">
+                    Enregistrer
+                </button>
+            </div>
+        </td>
+        <td>
+            <div class="d-flex align-items-end justify-content-end">
+                <button form="saveMechane" type="submit" class="btn btn-success float-end"
+                        aria-label="save">
+                    Enregistrer
+                </button>
+            </div>
+        </td>
+
+        </tfoot>
+    </table>
+
+    <table id="unitTable" class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Num d'unité</th>
+            <th scope="col">Vers</th>
+            <th scope="col">Personnage</th>
+            <th scope="col">Geste</th>
+            <th scope="col">Texte grec / texte français</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for unit in project.units %}
+        <tr>
+            <td>{{unit.id}}</td>
+            <td>{{unit.cite}}</td>
+            <td>{{unit.speaker}}</td>
+            <td>{% for mov in unit.mouvements.split('-') %}
+                <div>
+                    {{mov}}
+                </div>
+                {% endfor %}
+            </td>
+            <td>{{unit.text}}
+                <section id="unit{{unit.id}}"></section>
+                <form id="saveUnitModifs{{unit.id}}">
+                    <div class="form-group">
+                            <textarea name="french_text" class="form-control" id="french_text{{unit.id}}" rows="3"
+                            >{{unit.french_text}}</textarea>
+                    </div>
+                    <input type="hidden" name="unit_id" value="{{unit.id}}">
+                    <button onclick="save_unit_modifs({{unit.id}})" type="button" class="btn btn-success float-end"
+                            aria-label="save">
+                        Enregistrer
+<!--                        form="saveUnitModifs{{unit.id}}" action="/saveUnitModifs" method="post"-->
+                    </button>
+                </form>
+            </td>
+
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+</div>
+
+
+{% endblock %}

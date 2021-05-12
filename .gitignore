@@ -1,0 +1,6 @@
+.idea/
+**/__pycache__/*
+migrations/
+app.db
+.ipynb_checkpoints/
+**/*.ipynb
