@@ -104,7 +104,6 @@ def save_mechane(form):
 
 def save_unit_modifs(form):
     unit = Unit.query.get(form['unit_id'])
-    print(form['french_text'])
     unit.french_text = form['french_text']
     db.session.commit()
     return

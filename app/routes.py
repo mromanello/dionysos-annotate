@@ -69,5 +69,7 @@ def save_mechane():
 
 @app.route('/saveUnitModifs', methods=['POST'])
 def save_unit_modifs():
-    logic.save_unit_modifs(request.form)
-    return redirect(request.referrer + "#" + f'unit{request.form["unit_id"]}')
+    request_dict = dict([(u['name'], u['value']) for u in request.json])
+    logic.save_unit_modifs(request_dict)
+    # method doesn't redirect page, Javascript will update the corresponding unit
+    return request_dict
