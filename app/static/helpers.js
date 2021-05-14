@@ -1,3 +1,13 @@
+function makePostRequest(url, data) {
+    return new Request(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+}
+
 function save_unit_modifs(unit_id){
 
     let formData = $("#saveUnitModifs" + unit_id).serializeArray()
