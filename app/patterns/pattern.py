@@ -4,16 +4,39 @@ import re
 from greek_accentuation.characters import base
 
 
+def base_form(word: str) -> str:
+    """
+    Find the un-accented form of a word
+    :param word: string of greek characters
+    :return:
+    un-accented form of the word
+    """
+    return ''.join([base(c) for c in word])
+
+
 class Pattern(abc.ABC, metaclass=abc.ABCMeta):
+    """
+    This abstract class represents a Pattern that we can look for in a Word.
+    """
 
     @classmethod
     @abc.abstractmethod
     def name(cls) -> str:
+        """
+            This method should return the name of the pattern, which may be different from the class name.
+        """
         pass
 
     @classmethod
     @abc.abstractmethod
     def matches(cls, lemma: str, postag: str) -> bool:
+        """
+        Check whether the given word (lemma) along with its part-of-speech tag satisfies the Pattern criterion.
+        :param lemma: word in its lemmatized form, with accents
+        :param postag: part-of-speech tag of the word, following Perseids format (8 characters)
+        :return:
+        True if word matches pattern.
+        """
         return False
 
 
@@ -111,7 +134,3 @@ class UnitDelimiter(Pattern):
     @classmethod
     def matches(cls, lemma: str, postag: str) -> bool:
         return bool(re.fullmatch(r",|\.|;|·", lemma))
-
-
-def base_form(word: str) -> str:
-    return ''.join([base(c) for c in word])
