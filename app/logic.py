@@ -1,3 +1,5 @@
+import urllib.request
+
 from app import perseids_search
 from app.models import *
 
@@ -12,10 +14,11 @@ class Logic:
     def add_project(cls, project_attributes):
         project = Project(**project_attributes)
         db.session.add(project)
-        # Project needs to be in database to create dependent tables (character)
-        db.session.commit()
+        db.session.commit()  # Project needs to be in database to create dependent tables (character)
+
         try:
-            units, speakers = perseids_search.parse_xml_into_units('/home/ahmedj/xml/' + project.file_path)
+            local_filename, headers = urllib.request.urlretrieve(project.file_path)
+            units, speakers = perseids_search.parse_xml_into_units(local_filename)
         except Exception as e:
             # In case There was an error with parsing the file, we have to delete the project before raising the error.
             db.session.delete(project)
