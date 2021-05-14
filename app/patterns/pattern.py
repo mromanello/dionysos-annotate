@@ -16,7 +16,7 @@ def base_form(word: str) -> str:
 
 class Pattern(abc.ABC, metaclass=abc.ABCMeta):
     """
-    This abstract class represents a Pattern that we can look for in a Text.
+    This abstract class represents a Pattern that we can look for in a Word.
     """
 
     @classmethod
