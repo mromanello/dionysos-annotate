@@ -39,3 +39,4 @@ class Unit(db.Model):
     mouvements = db.Column(db.Text)
     cite = db.Column(db.Text)
     sentence_num = db.Column(db.Integer)
+    unit_num = db.Column(db.Integer)

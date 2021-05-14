@@ -29,8 +29,8 @@ class Logic:
             character = Character(name=speaker_name, project_id=project.id, lang='greek')
             db.session.add(character)
 
-        for unit_dict in units:
-            unit = Unit(**unit_dict, project_id=project.id)
+        for index, unit_dict in enumerate(units):
+            unit = Unit(**unit_dict, unit_num=index+1,  project_id=project.id)
             db.session.add(unit)
 
         db.session.commit()
