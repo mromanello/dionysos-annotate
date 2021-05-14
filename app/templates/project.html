@@ -345,7 +345,7 @@
         <tbody>
         {% for unit in project.units %}
         <tr>
-            <td>{{unit.id}}</td>
+            <td>{{unit.unit_num}}</td>
             <td>{{unit.cite}}</td>
             <td>{{unit.speaker}}</td>
             <td>{% for mov in unit.mouvements.split('-') %}
