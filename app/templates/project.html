@@ -357,15 +357,15 @@
             <td>{{unit.text}}
                 <section id="unit{{unit.id}}"></section>
                 <form id="saveUnitModifs{{unit.id}}">
+
                     <div class="form-group">
-                            <textarea name="french_text" class="form-control" id="french_text{{unit.id}}" rows="3"
+                            <textarea name="french_text" class="form-control" id="french_text{{unit.id}}" rows="2"
                             >{{unit.french_text}}</textarea>
                     </div>
                     <input type="hidden" name="unit_id" value="{{unit.id}}">
                     <button onclick="save_unit_modifs({{unit.id}})" type="button" class="btn btn-success float-end"
                             aria-label="save">
                         Enregistrer
-                        <!--                        form="saveUnitModifs{{unit.id}}" action="/saveUnitModifs" method="post"-->
                     </button>
                 </form>
             </td>
