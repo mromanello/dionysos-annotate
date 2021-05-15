@@ -202,7 +202,9 @@ french_data_tables_translation = {
 $(document).ready(function () {
     $('#unitTable').DataTable({
         deferRender: true,
+        deferLoading: true,
         language: french_data_tables_translation,
-        columns: [null, null, null, null, {orderable: false}]
+        columns: [null, null, null, null, {orderable: false}],
+        lengthMenu: [1, 5, 10, 50, 100]
     });
 });
