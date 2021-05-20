@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, jsonify
 
 from app import app
 from app.logic import Logic
@@ -92,3 +92,9 @@ def save_unit_modifs():
     Logic.save_unit_modifs(request_dict)
     # method doesn't redirect page, Javascript will update the corresponding unit
     return request_dict
+
+
+@app.route('/projectJson')
+def get_project_json():
+    json_dict = Logic.get_project_json(request.args['id'])
+    return jsonify(json_dict)

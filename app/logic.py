@@ -30,7 +30,7 @@ class Logic:
             db.session.add(character)
 
         for index, unit_dict in enumerate(units):
-            unit = Unit(**unit_dict, unit_num=index+1,  project_id=project.id)
+            unit = Unit(**unit_dict, unit_num=index + 1, project_id=project.id)
             db.session.add(unit)
 
         db.session.commit()
@@ -118,3 +118,17 @@ class Logic:
         unit.french_text = form['french_text']
         db.session.commit()
         return
+
+    @classmethod
+    def get_project_json(cls, project_id):
+        project = Project.query.get(project_id)
+        greek_characters = cls.get_characters(project_id, lang='greek')
+        french_characters = cls.get_characters(project_id, lang='french')
+        project_json = {'metadata': {'greek_characters': [gc[1] for gc in greek_characters],
+                                     'french_characters': [fc[1] for fc in french_characters],
+                                     'accessories': [acc.name for acc in project.accessories]},
+                        'ContenuSource': [{'unit_id': unit.unit_num, 'sentence_id': unit.sentence_num,
+                                           'cite': unit.cite, 'speaker': unit.speaker,
+                                           'text': unit.text, 'french_text': unit.french_text,
+                                           'mouvements': unit.mouvements.split('-')} for unit in project.units]}
+        return project_json
