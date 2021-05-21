@@ -126,7 +126,9 @@ class Logic:
         french_characters = cls.get_characters(project_id, lang='french')
         project_json = {'metadata': {'greek_characters': [gc[1] for gc in greek_characters],
                                      'french_characters': [fc[1] for fc in french_characters],
-                                     'accessories': [acc.name for acc in project.accessories]},
+                                     'accessories': [acc.name for acc in project.accessories],
+                                     'encycleme': project.encycleme,
+                                     'mechane': project.mechane},
                         'ContenuSource': [{'unit_id': unit.unit_num, 'sentence_id': unit.sentence_num,
                                            'cite': unit.cite, 'speaker': unit.speaker,
                                            'text': unit.text, 'french_text': unit.french_text,
