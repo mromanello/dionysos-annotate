@@ -40,3 +40,6 @@ class Unit(db.Model):
     cite = db.Column(db.Text)
     sentence_num = db.Column(db.Integer)
     unit_num = db.Column(db.Integer)
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

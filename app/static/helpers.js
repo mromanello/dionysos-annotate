@@ -9,7 +9,6 @@ function makePostRequest(url, data) {
 }
 
 function save_unit_modifs(unit_id) {
-
     let formData = $("#saveUnitModifs" + unit_id).serializeArray()
     let request = makePostRequest('/saveUnitModifs', formData)
     fetch(request).then(response => response.json()).then(
@@ -199,12 +198,51 @@ french_data_tables_translation = {
     }
 }
 
-$(document).ready(function () {
-    $('#unitTable').DataTable({
-        deferRender: true,
-        deferLoading: true,
-        language: french_data_tables_translation,
-        columns: [null, null, null, null, {orderable: false}],
-        lengthMenu: [1, 5, 10, 50, 100]
+function define_unit_table(project_id) {
+    $(document).ready(function () {
+        $('#unitTable').DataTable({
+            deferRender: true,
+            bStateSave: true,
+            language: french_data_tables_translation,
+            lengthMenu: [1, 5, 10, 50, 100],
+            ajax: "/unitsJson?id=" + project_id,
+            columns: [
+                {"data": "unit_num"},
+                {"data": "cite"},
+                {"data": "speaker"},
+                {
+                    "data": "mouvements",
+                    "render": function (data) {
+                        mouvements = data.split("-")
+                        html = ""
+                        mouvements.forEach(mouv => html += "<div>" + mouv + "</div>")
+                        return html;
+                    }
+                },
+                {
+                    "data": "text",
+                    "orderable": false,
+                    "render": function (data, type, row) {
+                        html = data
+                        if (row.french_text) {
+                            html += "<br>"
+                            html += `<b> ${row.french_text} </b>`
+                        }
+                        html += ` <form id="changeUnit" action="/saveUnitModifs" method="post">
+                                        <div class="form-group">
+                                            <input type="hidden" name="unit_id" value=${row.id}>   
+                                        </div>
+                                        <div class="form-group mb-1">
+                                            <textarea type="textarea" class="form-control", name="french_text"
+                                                rows="2" required>${row.french_text}</textarea>
+                                        </div>        
+                                        <button type="submit" class="btn btn-success float-end">Enregistrer
+                                </form>
+                        `
+                        return html;
+                    }
+                },
+            ]
+        });
     });
-});
+}

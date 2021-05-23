@@ -88,13 +88,25 @@ def save_mechane():
 
 @app.route('/saveUnitModifs', methods=['POST'])
 def save_unit_modifs():
-    request_dict = dict([(u['name'], u['value']) for u in request.json])
-    Logic.save_unit_modifs(request_dict)
-    # method doesn't redirect page, Javascript will update the corresponding unit
-    return request_dict
+    print(request.form)
+    Logic.save_unit_modifs(request.form)
+    return redirect(request.referrer)
+    # request_dict = dict([(u['name'], u['value']) for u in request.json])
+    # Logic.save_unit_modifs(request_dict)
+    # # method doesn't redirect page, Javascript will update the corresponding unit
+    # return request_dict
 
 
 @app.route('/projectJson')
 def get_project_json():
     json_dict = Logic.get_project_json(request.args['id'])
     return jsonify(json_dict)
+
+
+@app.route('/unitsJson')
+def get_units_as_json():
+    project_id = int(request.args['id'])
+    project = Logic.get_project(project_id)
+    # This format is required for the DataTable library Ajax fetching
+    return jsonify({'data': [unit.as_dict() for unit in project.units]})
+
