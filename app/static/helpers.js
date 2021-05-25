@@ -247,7 +247,7 @@ function define_unit_table(project_id) {
                                         </div>
                                         <div class="form-group mb-1">
                                             <textarea type="textarea" class="form-control", name="french_text"
-                                                rows="2" required>${row.french_text}</textarea>
+                                                rows="2" spellcheck="false" required>${row.french_text}</textarea>
                                         </div>
                                 </form>
                                 <button id="submitUnit${row.id}" onclick="save_unit_modifs(${row.id})"  class="btn btn-success float-end">Enregistrer </button>
