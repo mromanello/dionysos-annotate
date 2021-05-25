@@ -98,3 +98,11 @@ def save_unit_modifs():
 def get_project_json():
     json_dict = Logic.get_project_json(request.args['id'])
     return jsonify(json_dict)
+
+
+@app.route('/unitsJson')
+def get_units_as_json():
+    project_id = int(request.args['id'])
+    project = Logic.get_project(project_id)
+    # This format is required for the DataTable library Ajax fetching
+    return jsonify({'data': [unit.as_dict() for unit in project.units]})

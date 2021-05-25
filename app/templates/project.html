@@ -3,7 +3,6 @@
 {% block content %}
 
 <!--<h3 style="text-align: center">{{page_title}}</h3>-->
-
 <div class="container">
 
     <table class="table small table-striped table-bordered">
@@ -343,47 +342,20 @@
             <th scope="col">Texte grec / texte français</th>
         </tr>
         </thead>
-        <tbody>
-        {% for unit in project.units %}
-        <tr>
-            <td>{{unit.unit_num}}</td>
-            <td>{{unit.cite}}</td>
-            <td>{{unit.speaker}}</td>
-            <td>{% for mov in unit.mouvements.split('-') %}
-                <div>
-                    {{mov}}
-                </div>
-                {% endfor %}
-            </td>
-            <td>{{unit.text}}
-                <section id="unit{{unit.id}}"></section>
-                <form id="saveUnitModifs{{unit.id}}">
-
-                    <div class="form-group">
-                            <textarea name="french_text" class="form-control" id="french_text{{unit.id}}" rows="2"
-                            >{{unit.french_text}}</textarea>
-                    </div>
-                    <input type="hidden" name="unit_id" value="{{unit.id}}">
-                    <button onclick="save_unit_modifs({{unit.id}})" type="button" class="btn btn-success float-end"
-                            aria-label="save">
-                        Enregistrer
-                    </button>
-                </form>
-            </td>
-
-
-        </tr>
-        {% endfor %}
-        </tbody>
+        <tfoot>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+            <a class="btn btn-primary float-end" href="/projectJson?id={{project.id}}" role="button"
+               download="movs_{{project.french_name}}">Télécharger le fichier JSON</a>
+        </td>
+        </tfoot>
     </table>
-
-    <br>
-    <a class="btn btn-primary float-end" href="/projectJson?id={{project.id}}" role="button"
-       download="movs_{{project.french_name}}">Télécharger le fichier
-        JSON</a>
 
 
 </div>
-
+<script>define_unit_table({{project.id}})</script>
 
 {% endblock %}
