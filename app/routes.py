@@ -10,7 +10,7 @@ def index():
     """
        Render the Home page, containing all projects
     """
-    return render_template("index.html", page_title='Accueil', projects=Logic.get_all_projects())
+    return render_template("index.html", page_title='', projects=Logic.get_all_projects())
 
 
 @app.route('/project')

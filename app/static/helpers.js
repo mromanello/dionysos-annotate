@@ -15,7 +15,7 @@ function save_unit_modifs(unit_id) {
         data => {
             let table = $('#unitTable').DataTable()
             let french_text = data['french_text']
-            var d = table.row().data();
+            let d = table.row().data();
             d['french_text'] = french_text
             table
                 .row()
