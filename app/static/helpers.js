@@ -9,15 +9,22 @@ function makePostRequest(url, data) {
 }
 
 function save_unit_modifs(unit_id) {
-    let formData = $("#saveUnitModifs" + unit_id).serializeArray()
+    let formData = $("#changeUnit" + unit_id).serializeArray()
     let request = makePostRequest('/saveUnitModifs', formData)
     fetch(request).then(response => response.json()).then(
         data => {
+            let table = $('#unitTable').DataTable()
             let french_text = data['french_text']
-            $('#french_text' + unit_id).innerHTML = french_text
+            var d = table.row().data();
+            d['french_text'] = french_text
+            table
+                .row()
+                .data(d)
+                .draw();
         })
-    return
+    return true
 }
+
 
 french_data_tables_translation = {
     "emptyTable": "Aucune donnée disponible dans le tableau",
@@ -206,6 +213,9 @@ function define_unit_table(project_id) {
             language: french_data_tables_translation,
             lengthMenu: [1, 5, 10, 50, 100],
             ajax: "/unitsJson?id=" + project_id,
+            scrollY: "600px",
+            scrollCollapse: true,
+            scroller: true,
             columns: [
                 {"data": "unit_num"},
                 {"data": "cite"},
@@ -228,16 +238,19 @@ function define_unit_table(project_id) {
                             html += "<br>"
                             html += `<b> ${row.french_text} </b>`
                         }
-                        html += ` <form id="changeUnit" action="/saveUnitModifs" method="post">
+                        html += ` <form id="changeUnit${row.id}" action="/saveUnitModifs" method="post">
                                         <div class="form-group">
-                                            <input type="hidden" name="unit_id" value=${row.id}>   
+                                            <input type="hidden" name="unit_id" value=${row.id}>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" name="unit_num" value=${row.unit_num}>
                                         </div>
                                         <div class="form-group mb-1">
                                             <textarea type="textarea" class="form-control", name="french_text"
                                                 rows="2" required>${row.french_text}</textarea>
-                                        </div>        
-                                        <button type="submit" class="btn btn-success float-end">Enregistrer
+                                        </div>
                                 </form>
+                                <button id="submitUnit${row.id}" onclick="save_unit_modifs(${row.id})"  class="btn btn-success float-end">Enregistrer </button>
                         `
                         return html;
                     }
@@ -246,3 +259,5 @@ function define_unit_table(project_id) {
         });
     });
 }
+
+
