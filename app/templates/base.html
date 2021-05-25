@@ -2,6 +2,13 @@
 
 <html lang="fr-CH">
 <head>
+<style>
+    .navbar-text.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+    }
+</style>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -27,13 +34,12 @@
 <!-- Your page content -->
 
 <nav class="navbar navbar-light bg-light">
-    <div class="container-fluid">
-
-        <p class="navbar-text">
-        <h3 style="text-align: center">{{page_title}}</h3> </p>
+    <span class="container-lg text-nowrap">
         <a class="navbar-brand" href="/">Acceuil</a>
-
-    </div>
+        <p class="navbar-text navbar-center">
+            <h3 style="text-align: center">{{page_title}}</h3>
+        </p>
+    </span>
 </nav>
 <br>
 {% block content %}{% endblock %}
