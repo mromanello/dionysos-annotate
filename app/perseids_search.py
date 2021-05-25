@@ -31,7 +31,8 @@ def shift_series(series, start):
 
 
 def get_new_units(words):
-    unit_delimiter = words.apply(lambda r: pattern.UnitDelimiter.matches(r['lemma'], r['postag']), axis=1)
+    unit_delimiter = words.apply(lambda r: pattern.UnitDelimiter.matches(r['lemma'], r['postag']), axis=1) |\
+                     words.apply(lambda r: pattern.Punctuation.matches(r['lemma'], r['postag']), axis=1)
     return shift_series(unit_delimiter, start=True)
 
 
