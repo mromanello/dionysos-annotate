@@ -39,6 +39,7 @@ class Pattern(abc.ABC, metaclass=abc.ABCMeta):
         """
         return False
 
+## All these patterns are Hardcoded, and sadly only apply to Perseids XML.
 
 class Deixis(Pattern):
     @classmethod

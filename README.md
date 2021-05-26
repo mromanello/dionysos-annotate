@@ -41,5 +41,5 @@ for the app.
 the Perseids project.
 - **routes.py**: answers HTTP requests from the front-end.
 
-Disclaimer 2.0: the code can be improved in certain parts. However, it should be extensively documented/commented.  
+Disclaimer 2.0: the code can be improved in certain parts. However, it should be well documented/commented.  
 

@@ -12,6 +12,8 @@ class Project(db.Model):
     french_name = db.Column(db.Text)
     encycleme = db.Column(db.Boolean, default=False)
     mechane = db.Column(db.Boolean, default=False)
+
+    # Save Relationships to Child Tables for fast access
     characters = db.relationship('Character', backref='project')
     accessories = db.relationship('Accessory', backref='project')
     units = db.relationship('Unit', backref='project')

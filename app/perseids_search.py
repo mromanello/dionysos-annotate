@@ -6,6 +6,11 @@ from app.patterns import search,pattern
 
 
 def read_perseids_xml_into_df(filename):
+    """
+        Parses an XML file in Perseids format to a pandas Dataframe
+    :param filename: location of file
+    :return:
+    """
     xml = ET.parse(filename)
     root = xml.getroot()
     dicts = []
@@ -21,22 +26,44 @@ def read_perseids_xml_into_df(filename):
 
 
 def get_characters(words):
+    """
+    :param words: pandas Dataframe which should contain the column 'speaker'
+    :return: list(str)
+    """
     return list(words.speaker.unique())
 
 
 def shift_series(series, start):
+    """
+        Helper function, shifts a Pandas series By 1 position to the left,
+        with the last element taking the value start
+    :param series:  Pd.Series to shift
+    :param start: default element to give to the last element
+    :return: Pd.Series
+    """
     new_series = pd.Series(start, index=series.index)
     new_series[1:] = series.iloc[:-1]
     return new_series
 
 
 def get_new_units(words):
+    """
+    Finds positions where a new unit starts.
+    This is defined as words coming after a word satisfying the UnitDelimiter Pattern or a Punctuation pattern.
+    :param words: Pd.DataFrame, should contain columns 'lemma' and 'postag'
+    :return: Pd.Series with True in positions where a new unit starts
+    """
     unit_delimiter = words.apply(lambda r: pattern.UnitDelimiter.matches(r['lemma'], r['postag']), axis=1) |\
                      words.apply(lambda r: pattern.Punctuation.matches(r['lemma'], r['postag']), axis=1)
     return shift_series(unit_delimiter, start=True)
 
 
 def get_unit_id(words):
+    """
+    Gives to each word in the DataFrame the unit number it belongs to.
+    :param words: Pd.DataFrame, should contain columns 'lemma' and 'postag'
+    :return: Pd.Series
+    """
     unit_delimiter = get_new_units(words)
     unit_ids = range(1, unit_delimiter.sum() + 1)
     starts = unit_delimiter[unit_delimiter].index
@@ -49,6 +76,11 @@ def get_unit_id(words):
 
 
 def get_words_with_punc_after(words):
+    """
+    Find words with punctuation after them.
+    :param words: Pd.DataFrame, should contain columns 'lemma' and 'postag'
+    :return: Pd.Series
+    """
     punctuation = words.apply(lambda r: pattern.Punctuation.matches(r['lemma'], r['postag']), axis=1)
     punc_after = pd.Series(False, index=punctuation.index)
     punc_after[:-1] = punctuation[1:]  # shift left
@@ -56,8 +88,17 @@ def get_words_with_punc_after(words):
 
 
 def group_words_into_units(words):
+    """
+    This function groups the words DataFrame into a Dataframe with Units.
+    :param words: Pd.DataFrame
+    :return: Pd.DataFrame
+    """
     def apply_group_by_unit(df):
-        mouvements_in_unit = []
+        """
+        Apply used in GroupBy of the words DataFrame
+        :param df: Pd.DataFrame
+        :return: Pd.DataFrame
+        """
 
         # unique in unit
         cite = df.iloc[0]['cite']
@@ -94,12 +135,19 @@ def group_words_into_units(words):
 
 
 def parse_xml_into_units(filename):
+    """
+    This function does all the required steps in order to Parse an XML file into dataframes that will
+    be stored in the Database
+    :param filename: Path to the XML file
+    :return: Pd.DataFrame (unit DataFrame), list(str): list of characters in play
+    """
+    # Parse XML
     words = read_perseids_xml_into_df(filename)
-
+    # Detect Mouvements
     words['mouvements'] = words.apply(lambda x: search.search_patterns(x['lemma'], x['postag']), axis=1)
-
+    # Add Unit ids
     words['unit_id'] = get_unit_id(words)
-
+    # Detectes words with punctuation after them, useful for rendering unit text
     words['punc_after'] = get_words_with_punc_after(words)
 
     return group_words_into_units(words), get_characters(words)
