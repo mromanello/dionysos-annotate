@@ -21,9 +21,12 @@ server, due to security issues.
 - `cd shs-website`
 - run the script: `./boot.sh`
 - you may need to first make the script executable : `chmod +x boot.sh`
+- access `localhost:5000`
 
 ### Using Docker
-- Coming up
+- Build the image : `make build_image`
+- run the website: `make website`
+- access `localhost:5000`
 
 ## Code
 The app structure is fairly simple,
@@ -40,6 +43,6 @@ for the app.
 - **perseids_search.py**: contains all code which is related to parsing XML obtained from
 the Perseids project.
 - **routes.py**: answers HTTP requests from the front-end.
-
+**migrations** contains Database migrations info (Alembic)
 Disclaimer 2.0: the code can be improved in certain parts. However, it should be well documented/commented.  
 
