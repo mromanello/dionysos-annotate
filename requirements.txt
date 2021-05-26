@@ -1,0 +1,8 @@
+alembic==1.5.7
+betacode==1.0
+Flask==1.1.2
+Flask-Migrate==2.7.0
+Flask-SQLAlchemy==2.4.4
+greek-accentuation==1.2.0
+Jinja2==2.11.2
+pandas==1.2.2
