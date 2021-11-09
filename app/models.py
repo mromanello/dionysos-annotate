@@ -7,7 +7,7 @@ This module contains Database Table definitions, following SQLALCHEMY Syntax.
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    file_path = db.Column(db.Text, unique=True)
+    file_path = db.Column(db.Text, unique=False)
     greek_name = db.Column(db.Text, default='')
     french_name = db.Column(db.Text)
     encycleme = db.Column(db.Boolean, default=False)

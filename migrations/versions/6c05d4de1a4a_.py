@@ -26,7 +26,7 @@ def upgrade():
     sa.Column('encycleme', sa.Boolean(), nullable=True),
     sa.Column('mechane', sa.Boolean(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('file_path')
+    #sa.UniqueConstraint('file_path')
     )
     op.create_table('accessory',
     sa.Column('id', sa.Integer(), nullable=False),
