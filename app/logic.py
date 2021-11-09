@@ -1,4 +1,5 @@
 import urllib.request
+import pdb
 
 from app import perseids_search
 from app.models import *
@@ -37,6 +38,38 @@ class Logic:
 
         db.session.commit()
         return
+    
+    @classmethod
+    def add_project_from_json(
+            cls,
+            project_attributes,
+            greek_speakers,
+            french_speakers,
+            text_units
+        ):
+        project = Project(**project_attributes)
+        db.session.add(project)
+        db.session.commit()  # Project needs to be in database to create dependent tables (character)
+
+
+        for speaker_name in greek_speakers:
+            character = Character(name=speaker_name, project_id=project.id, lang='greek')
+            db.session.add(character)
+
+        for speaker_name in french_speakers:
+            character = Character(name=speaker_name, project_id=project.id, lang='french')
+            db.session.add(character)
+
+        for index, unit_dict in enumerate(text_units):
+            sentence_id = unit_dict.pop('sentence_id')
+            unit_id = unit_dict.pop('unit_id')
+            movements = unit_dict.pop('mouvements')
+            unit_dict['mouvements'] = "-".join(movements)
+            unit = Unit(**unit_dict, unit_num=unit_id, sentence_num=sentence_id, project_id=project.id)
+            db.session.add(unit)
+
+        db.session.commit()
+        return
 
     @classmethod
     def get_all_projects(cls):
@@ -55,10 +88,11 @@ class Logic:
         :return: None
         """
         project = Project.query.get(id)
+
         # delete children
         children = project.characters + project.accessories + project.units
         for child in children:
-            child.query.delete()
+            db.session.delete(child)
         # delete project
         db.session.delete(project)
         # commit
@@ -208,7 +242,10 @@ class Logic:
                                      'french_characters': [fc[1] for fc in french_characters],
                                      'accessories': [acc.name for acc in project.accessories],
                                      'encycleme': project.encycleme,
-                                     'mechane': project.mechane},
+                                     'mechane': project.mechane,
+                                     'file_path': project.file_path,
+                                     'greek_name': project.greek_name,
+                                     'french_name': project.french_name},
                         'ContenuSource': [{'unit_id': unit.unit_num, 'sentence_id': unit.sentence_num,
                                            'cite': unit.cite, 'speaker': unit.speaker,
                                            'text': unit.text, 'french_text': unit.french_text,

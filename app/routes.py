@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, jsonify
 
+import json
 from app import app
 from app.logic import Logic
 
@@ -47,6 +48,31 @@ def add_project():
 
     """
     Logic.add_project(request.form)
+    return redirect(request.referrer)
+
+
+@app.route('/addLocalProject', methods=['POST'])
+def add_local_project():
+    """
+        Creates a new project in the database.
+        Handles POST requests where the fields of the form are like the following:
+
+    """
+    if request.files:
+        uploaded_json_file = request.files['json_file_upload']
+        json_data = json.loads(uploaded_json_file.read())
+        project_metadata = json_data['metadata']
+        text_units = json_data['ContenuSource']
+        grk_characters = project_metadata['greek_characters']
+        fr_characters = project_metadata['french_characters']
+        project_attributes = {
+            "greek_name": project_metadata['greek_name'],
+            "french_name": project_metadata['french_name'],
+            "file_path": project_metadata['file_path'],
+            "encycleme": project_metadata['encycleme'],
+            "mechane": project_metadata['mechane']
+        }
+        Logic.add_project_from_json(project_attributes, grk_characters, fr_characters, text_units)
     return redirect(request.referrer)
 
 
