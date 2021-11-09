@@ -12,6 +12,9 @@ function save_unit_modifs(unit_id) {
     let formData = $("#changeUnit" + unit_id).serializeArray()
     let request = makePostRequest('/saveUnitModifs', formData)
     fetch(request).then(response => response.json()).then(
+
+        /*
+        // row refresh disabled as it was refreshing always only the first row
         data => {
             let table = $('#unitTable').DataTable()
             let french_text = data['french_text']
@@ -21,7 +24,9 @@ function save_unit_modifs(unit_id) {
                 .row()
                 .data(d)
                 .draw();
-        })
+        }
+        */
+        )
     return true
 }
 
