@@ -51,7 +51,10 @@
         </tbody>
     </table>
     <button type="button" class="btn btn-success float-end" data-bs-toggle="modal"
-            data-bs-target="#addProject">Ajouter
+    data-bs-target="#addLocalProject" style="margin:1px">Télécharger
+    </button>
+    <button type="button" class="btn btn-success float-end" data-bs-toggle="modal"
+            data-bs-target="#addProject" style="margin:1px">Ajouter
     </button>
 </div>
 
@@ -84,6 +87,29 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                 <button type="submit" form="newProject" class="btn btn-danger">Creer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addLocalProject" tabindex="-2"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Télécharger un projet existant</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="localProject" action="/addLocalProject" method="post" enctype="multipart/form-data">
+                    <label for="json_file_upload">Selectionner un fichier de projet existant (.json):</label>
+                    <input type="file" class="form-control" name="json_file_upload" id="json_file" required>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="submit" form="localProject" class="btn btn-danger">Creer</button>
             </div>
         </div>
     </div>
